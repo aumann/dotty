@@ -53,7 +53,7 @@ trait ParallelTesting extends RunnerOrchestration { self =>
     def outDir: JFile
     def flags: TestFlags
 
-    def runClassPath: String = outDir.getAbsolutePath + ":" + flags.runClassPath
+    def runClassPath: String = outDir.getAbsolutePath + java.io.File.pathSeparator + flags.runClassPath
 
     def title: String = self match {
       case self: JointCompilationSource =>
@@ -346,7 +346,7 @@ trait ParallelTesting extends RunnerOrchestration { self =>
           "javac",
           "-encoding", "UTF-8",
           "-classpath",
-          s"${Jars.scalaLibrary}:${targetDir.getAbsolutePath}"
+          s"${Jars.scalaLibrary}${JFile.pathSeparator}${targetDir.getAbsolutePath}"
         ) ++ flags.all.takeRight(2) ++ fs
 
         val process = Runtime.getRuntime.exec(fullArgs)

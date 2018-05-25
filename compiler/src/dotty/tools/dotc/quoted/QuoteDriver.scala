@@ -10,6 +10,7 @@ import dotty.tools.dotc.printing.DecompilerPrinter
 import scala.quoted.{Expr, Type}
 
 import java.net.URLClassLoader
+import java.nio.file.Paths
 
 import Toolbox.{Settings, Run, Show}
 
@@ -81,8 +82,9 @@ class QuoteDriver extends Driver {
       case cl: URLClassLoader =>
         // Loads the classes loaded by this class loader
         // When executing `run` or `test` in sbt the classpath is not in the property java.class.path
-        val newClasspath = cl.getURLs.map(_.getFile())
-        classpath = newClasspath.mkString("", ":", if (classpath == "") "" else ":" + classpath)
+        val newClasspath = cl.getURLs.map(url => Paths.get(url.toURI).toFile)
+        val fixedOriginalClasspath = classpath.split(java.io.File.pathSeparator).map(new java.io.File(_).toURI).map(uri => Paths.get(uri).toFile).mkString(java.io.File.pathSeparator)
+        classpath = newClasspath.mkString("", java.io.File.pathSeparator, if (fixedOriginalClasspath == "") "" else java.io.File.pathSeparator + fixedOriginalClasspath)
       case _ =>
     }
     ictx.settings.classpath.update(classpath)(ictx)

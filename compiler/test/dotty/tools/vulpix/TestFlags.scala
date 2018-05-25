@@ -12,10 +12,10 @@ final case class TestFlags(
     TestFlags(defaultClassPath, runClassPath, options diff flags)
 
   def withClasspath(classPath: String): TestFlags =
-    TestFlags(s"$defaultClassPath:$classPath", runClassPath, options)
+    TestFlags(s"$defaultClassPath${java.io.File.pathSeparator}$classPath", runClassPath, options)
 
   def withRunClasspath(classPath: String): TestFlags =
-    TestFlags(defaultClassPath, s"$runClassPath:$classPath", options)
+    TestFlags(defaultClassPath, s"$runClassPath${java.io.File.pathSeparator}$classPath", options)
 
   def all: Array[String] = Array("-classpath", defaultClassPath) ++ options
 }

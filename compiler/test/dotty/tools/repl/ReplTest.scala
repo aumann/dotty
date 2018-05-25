@@ -13,7 +13,7 @@ import results.Result
 
 
 class ReplTest private (out: ByteArrayOutputStream) extends ReplDriver(
-  Array("-classpath", List(Jars.dottyLib, Jars.dottyInterfaces).mkString(":"), "-color:never"),
+  Array("-classpath", List(Jars.dottyLib, Jars.dottyInterfaces).mkString(java.io.File.pathSeparator), "-color:never"),
   new PrintStream(out)
 ) with MessageRendering {
 

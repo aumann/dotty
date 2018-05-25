@@ -158,7 +158,7 @@ trait RunnerOrchestration {
     private def createProcess: Process = {
       val sep = sys.props("file.separator")
       val cp =
-        classOf[ChildJVMMain].getProtectionDomain.getCodeSource.getLocation.getFile + ":" +
+        classOf[ChildJVMMain].getProtectionDomain.getCodeSource.getLocation.getFile + java.io.File.pathSeparator +
         Jars.scalaLibrary
       val javaBin = sys.props("java.home") + sep + "bin" + sep + "java"
       new ProcessBuilder(javaBin, "-Xmx1g", "-cp", cp, "dotty.tools.vulpix.ChildJVMMain")

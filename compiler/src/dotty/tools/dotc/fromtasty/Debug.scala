@@ -65,7 +65,7 @@ object Debug {
 
   private def insertClasspathInArgs(args: List[String], cp: String): List[String] = {
     val (beforeCp, fromCp) = args.span(_ != "-classpath")
-    val classpath = fromCp.drop(1).headOption.fold(cp)(_ + ":" + cp)
+    val classpath = fromCp.drop(1).headOption.fold(cp)(_ + java.io.File.pathSeparator + cp)
     "-classpath" :: classpath :: beforeCp ::: fromCp.drop(2)
   }
 }
